@@ -9,6 +9,8 @@ Client를 설치하지 않고 사용이 가능하며, 현재는 Oracle, MySQL, M
 
 궁극적으로 Vitamin Studion를 통하여 DB를 활용한 개발을 손쉽게 할 수있도록 할 예정이다.
 
+#### 사용 콤포넌트
+
 #### 제공되어질 기능
 * * *
 ![Alt text](https://postfiles.pstatic.net/20141127_124/dmzone75_1417069824341sL5xp_PNG/VitaminProject.png?type=w3)
