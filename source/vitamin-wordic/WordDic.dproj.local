@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="uApprovalMg.pas"/>
+    <File Path="uApprovalMg.dfm"/>
+    <File Path="uConnect.pas"/>
+    <File Path="uConnect.dfm"/>
+    <File Path="uEnvMg.pas"/>
+    <File Path="uEnvMg.dfm"/>
+    <File Path="uMain.pas"/>
+    <File Path="uMain.dfm"/>
+    <File Path="uSave.pas"/>
+    <File Path="uSave.dfm"/>
+    <File Path="uTermDML.pas"/>
+    <File Path="uTermDML.dfm"/>
+    <File Path="uTermMg.pas"/>
+    <File Path="uTermMg.dfm"/>
+    <File Path="uUserMg.pas"/>
+    <File Path="uUserMg.dfm"/>
+    <File Path="uWordDML.pas"/>
+    <File Path="uWordDML.dfm"/>
+    <File Path="uWordMg.pas"/>
+    <File Path="uWordMg.dfm"/>
+  </ProjectSortOrder>
+</BorlandProject>
