@@ -1,4 +1,9 @@
 # Delphi history and backups
+*.bak
+*.dcu
+*.exe
+*.identcache
+*.local
 __history/
 __recovery/
 *.~*
