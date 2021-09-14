@@ -196,7 +196,7 @@ begin
    try
       v_stParam.Add(pi_sThENm);
       try
-         oraQry_DML.SpecificOptions.Values['FetchAll'] := 'True';
+//         oraQry_DML.SpecificOptions.Values['FetchAll'] := 'True';
          frmMain.pGet_QryExec(  0
                               , v_sSql
                               , v_stParam
