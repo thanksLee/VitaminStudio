@@ -117,6 +117,15 @@
         <DCCReference Include="core\utility\dbconn\uUnidac.pas"/>
         <DCCReference Include="core\utility\udate.pas"/>
         <DCCReference Include="core\utility\ustring.pas"/>
+        <DCCReference Include="product\wordic\uWordDicLogin.pas">
+            <Form>frmWordDicLogin</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="common\docking\uDockLogConsole.pas">
+            <Form>frmDockLogConsole</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="core\utility\ulib.pas"/>
         <None Include="vitaminstudio.todo"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

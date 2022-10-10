@@ -11,7 +11,7 @@ function ufDBConn(pi_Flg : Integer; pi_ObjDbConn : TUniConnection; pi_DbConnInfo
 //****************************************************************************//
 //* SQL을 실행한다.
 //****************************************************************************//
-function ufBackGroundUniSQLExec(pi_Flg : Integer; pi_Sql, pi_SQLSession : String; pi_stlParam : TStringList; pi_ObjQry : TUniQuery) : TArray<String>;
+function ufBackGroundUniSQLExec(pi_Flg : Integer; pi_Sql: String; pi_stlParam : TStringList; pi_ObjQry : TUniQuery) : TArray<String>;
 //****************************************************************************//
 //* Query 경과 시간을 구한다.
 //****************************************************************************//
@@ -20,7 +20,7 @@ function fGetQueryElapsedTime(pi_Flg : Integer; pi_StartTime, pi_EndTime : TDate
 implementation
 
 
-uses udate, ustring;
+uses udate, ustring, ufile;
 
 //****************************************************************************//
 //* DB Connection
@@ -101,7 +101,7 @@ end;
 //****************************************************************************//
 //* SQL을 실행한다.
 //****************************************************************************//
-function ufBackGroundUniSQLExec(pi_Flg : Integer; pi_Sql, pi_SQLSession : String; pi_stlParam : TStringList; pi_ObjQry : TUniQuery) : TArray<String>;
+function ufBackGroundUniSQLExec(pi_Flg : Integer; pi_Sql: String; pi_stlParam : TStringList; pi_ObjQry : TUniQuery) : TArray<String>;
 var
    lv_iParamCnt : Integer;
    lv_bCheck    : Boolean;
@@ -148,8 +148,8 @@ begin
                      for lv_iParamCnt := 0 to pi_stlParam.Count - 1 do
                      begin
                         Params[lv_iParamCnt].AsString := pi_stlParam.Strings[lv_iParamCnt];
-                        if lv_iParamCnt = 0 then lv_SpoolParam := '### Parameter : ' + pi_stlParam.Strings[lv_iParamCnt]
-                        else lv_SpoolParam := lv_SpoolParam + ', ' + pi_stlParam.Strings[lv_iParamCnt];
+                        if lv_iParamCnt = 0 then lv_SpoolParam := '### Parameter : ' + pi_ObjQry.Params[lv_iParamCnt].Name + '=' + pi_stlParam.Strings[lv_iParamCnt]
+                        else lv_SpoolParam := lv_SpoolParam + ', ' + Params[lv_iParamCnt].Name + '=' + pi_stlParam.Strings[lv_iParamCnt];
                      end;
                      FetchRows := 100;
                      Active := True;
@@ -178,8 +178,8 @@ begin
                            Params[lv_iParamCnt].AsString := pi_stlParam.Strings[lv_iParamCnt];
                         end;
 
-                        if lv_iParamCnt = 0 then lv_SpoolParam := '### Parameter : ' + pi_stlParam.Strings[lv_iParamCnt]
-                        else lv_SpoolParam := lv_SpoolParam + ', ' + pi_stlParam.Strings[lv_iParamCnt];
+                        if lv_iParamCnt = 0 then lv_SpoolParam := '### Parameter : ' + Params[lv_iParamCnt].Name + '=' + pi_stlParam.Strings[lv_iParamCnt]
+                        else lv_SpoolParam := lv_SpoolParam + ', ' + Params[lv_iParamCnt].Name + '=' + pi_stlParam.Strings[lv_iParamCnt];
                      end;
                      ExecSQL;
                      lv_retVal[1] := IntToStr(pi_ObjQry.RowsAffected);
@@ -203,6 +203,17 @@ begin
       {-- 소요시간 Logging --}
       lv_Msg := '######### SQL 실행 시간 :  ' + lv_SqlExecTime + ' - ' + lv_QryElapsedTM + ' ##########';
       lv_retVal[2] := lv_Msg;
+
+      ufSQLSpool(0, lv_SQLErrLineNum, lv_SQLErrColNum, lv_Sql, '');
+      ufSQLSpool(0, lv_SQLErrLineNum, lv_SQLErrColNum, lv_SpoolParam, '');
+
+      if lv_retVal[0] = 'FAIL' then
+         ufSQLSpool(0, lv_SQLErrLineNum, lv_SQLErrColNum, lv_retVal[1], '')
+      else
+         if lv_retVal[1] <> '' then
+            ufSQLSpool(0, lv_SQLErrLineNum, lv_SQLErrColNum, '######### RowsAffected : '  + lv_retVal[1] + ' ##########', '');
+
+      ufSQLSpool(0, lv_SQLErrLineNum, lv_SQLErrColNum, lv_retVal[2], '');
    end;
    Result := lv_retVal;
 end;

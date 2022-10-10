@@ -3,7 +3,7 @@ unit uForm;
 interface
 uses System.SysUtils, Vcl.Forms, Inifiles, System.Classes, Winapi.Windows,
    cxDropDownEdit, cxLookAndFeelPainters, dxSkinsDefaultPainters, dxSkinsForm,
-   dxSkinsCore,
+   dxSkinsCore, Graphics,
   {-- S : Skin --}
   dxSkinBlack, dxSkinBlue,
   dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
@@ -22,25 +22,17 @@ uses System.SysUtils, Vcl.Forms, Inifiles, System.Classes, Winapi.Windows,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
   dxSkinXmas2008Blue, dxSkinsLookAndFeelPainter,
   {-- E : Skin --}
-  SynEdit
+  {-- S : SynEditor --}
+   SynEdit,
+  {-- E : SynEditor --}
+  dxDockControl, dxBar
 ;
 
-//*****************************************************************************
-//* Active 된 form 찾기
-//* Parameter : pi_Flg     - 0 : Active 된 Child Form 닫기
-//*                        - 1 : Form 활성화 시키기
-//*                        - 2 : Close 시키기
-//*             pi_Caption - FormCaption
-//*****************************************************************************
+procedure uPFormSetting(pi_Flg : Integer; pi_ObjFrm : TForm);
 function ufActiveFrom(pi_Flg : Integer; pi_Caption : String) : TForm;
-//************************************************************************//
-//* Skin List Load
-//************************************************************************//
-procedure SkinLoad(pi_objCmb : TcxComboBox);
-//****************************************************************************//
-// SQL을 관리
-//****************************************************************************//
-procedure SQLLoad(pi_ObjSynEd : TSynEdit);
+procedure uPSkinLoad(pi_SelectSkin: String; pi_objCmb : TcxComboBox);
+procedure uPSQLLoad(pi_ObjSynEd : TSynEdit);
+
 implementation
 
 //*****************************************************************************
@@ -48,6 +40,36 @@ implementation
 
 uses uGlobal;
 
+
+//****************************************************************************//
+//* Form 을 Setting 한다.
+//****************************************************************************//
+procedure uPFormSetting(pi_Flg : Integer; pi_ObjFrm : TForm);
+begin
+  with pi_ObjFrm do
+  begin
+    Font.Size  := 9;
+    Font.Name := '굴림체';
+    KeyPreview  := True;
+    case pi_Flg of
+      0 : begin
+            FormStyle   := fsMDIForm;
+            Position    := poScreenCenter;
+            Caption     := VERSION;
+            Menu        := nil; // DB Connection 이 된후 Menu를 결정.
+          end;
+      1 : begin
+            FormStyle   := fsMDIChild;
+            Position    := poMainFormCenter;
+          end;
+    end;
+    KeyPreview  := True;
+    WindowState := wsMaximized;
+  end;
+end;
+
+
+//*****************************************************************************
 //* Active 된 form 찾기
 //* Parameter : pi_Flg     - 0 : Active 된 Child Form 닫기
 //*                        - 1 : Form 활성화 시키기
@@ -103,22 +125,27 @@ end;
 //************************************************************************//
 //* Skin List Load
 //************************************************************************//
-procedure SkinLoad(pi_objCmb : TcxComboBox);
+procedure uPSkinLoad(pi_SelectSkin: String; pi_objCmb : TcxComboBox);
 var
    lv_LoopCnt : Integer;
+   lv_tmpStr : String;
 begin
    // uses dxSkinsLookAndFeelPainter
-   pi_objCmb.Clear;
+   pi_objCmb.Properties.Items.Clear;
    pi_objCmb.Properties.Items.BeginUpdate;
    try
       pi_objCmb.Properties.Items.Add('<Random>');
       for lv_LoopCnt := 1 to cxLookAndFeelPaintersManager.Count - 1 do
       begin
          if cxLookAndFeelPaintersManager.Items[lv_LoopCnt] is TdxSkinLookAndFeelPainter then
-            pi_objCmb.Properties.Items.Add(cxLookAndFeelPaintersManager.Items[lv_LoopCnt].LookAndFeelName)
+         begin
+            lv_tmpStr := cxLookAndFeelPaintersManager.Items[lv_LoopCnt].LookAndFeelName;
+            pi_objCmb.Properties.Items.Add(cxLookAndFeelPaintersManager.Items[lv_LoopCnt].LookAndFeelName);
+         end;
       end;
       pi_objCmb.ItemIndex := 0;
    finally
+      pi_objCmb.Text := pi_SelectSkin;
       pi_objCmb.Properties.Items.EndUpdate;
    end;
 end;
@@ -126,7 +153,7 @@ end;
 //****************************************************************************//
 // SQL을 관리
 //****************************************************************************//
-procedure SQLLoad(pi_ObjSynEd : TSynEdit);
+procedure uPSQLLoad(pi_ObjSynEd : TSynEdit);
 var
    lv_LoopCnt, lv_Idx : Integer;
    lv_tmpStr, lv_Key, lv_Value : String;
@@ -185,5 +212,6 @@ begin
       //Inc(lv_LoopCnt);
    end; // while..end
 end;
+
 
 end.
