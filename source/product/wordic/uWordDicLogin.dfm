@@ -2,10 +2,10 @@ object frmWordDicLogin: TfrmWordDicLogin
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  BorderStyle = bsSizeToolWin
+  BorderStyle = bsSingle
   Caption = 'WordDic Login'
-  ClientHeight = 477
-  ClientWidth = 418
+  ClientHeight = 487
+  ClientWidth = 419
   Color = clBtnFace
   Font.Charset = HANGEUL_CHARSET
   Font.Color = clWindowText
@@ -27,11 +27,12 @@ object frmWordDicLogin: TfrmWordDicLogin
   end
   object dxBevel2: TdxBevel
     Left = 0
-    Top = 439
-    Width = 418
-    Height = 38
+    Top = 445
+    Width = 419
+    Height = 42
     Align = alBottom
-    ExplicitLeft = -8
+    ExplicitTop = 434
+    ExplicitWidth = 418
   end
   object cxLabel1: TcxLabel
     Left = 19
@@ -61,10 +62,10 @@ object frmWordDicLogin: TfrmWordDicLogin
   end
   object cxGroupBox1: TcxGroupBox
     Left = 8
-    Top = 112
+    Top = 111
     Caption = 'Word Dic DB '#51217#49549' '#51221#48372
     TabOrder = 4
-    Height = 321
+    Height = 308
     Width = 401
     object cxLabel3: TcxLabel
       Left = 16
@@ -89,19 +90,21 @@ object frmWordDicLogin: TfrmWordDicLogin
       Left = 2
       Top = 64
       Width = 397
-      Height = 255
+      Height = 242
       Align = alBottom
       TabOrder = 2
       Properties.ActivePage = cxTab_SQLite
       Properties.CustomButtons.Buttons = <>
       Properties.Images = frmMain.MainCxImglst_16
       OnChange = cxPgCtl_DbmsTypeChange
-      ClientRectBottom = 255
+      ExplicitTop = 76
+      ClientRectBottom = 242
       ClientRectRight = 397
       ClientRectTop = 25
       object cxTab_SQLite: TcxTabSheet
         Caption = 'SQLite'
         ImageIndex = 52
+        ExplicitHeight = 230
         object cxLabel4: TcxLabel
           Left = 9
           Top = 16
@@ -124,7 +127,7 @@ object frmWordDicLogin: TfrmWordDicLogin
         end
         object cxVGrd_SQLite: TcxVerticalGrid
           Left = 0
-          Top = 56
+          Top = 43
           Width = 397
           Height = 174
           Align = alBottom
@@ -132,26 +135,30 @@ object frmWordDicLogin: TfrmWordDicLogin
           OptionsData.Editing = False
           TabOrder = 2
           OnKeyDown = cxVGrd_SQLiteKeyDown
+          ExplicitTop = 56
           Version = 1
         end
       end
       object cxTab_MariaDb: TcxTabSheet
         Caption = 'MariaDB'
         ImageIndex = 51
+        ExplicitHeight = 230
       end
       object cxTab_PostgreSql: TcxTabSheet
         Caption = 'PostgreSQL'
         ImageIndex = 53
+        ExplicitHeight = 230
       end
       object cxTab_Oralce: TcxTabSheet
         Caption = 'Oracle'
         ImageIndex = 50
+        ExplicitHeight = 230
       end
     end
   end
   object cxBtn_Login: TcxButton
     Left = 178
-    Top = 445
+    Top = 444
     Width = 75
     Height = 25
     Action = act_Login
@@ -159,7 +166,7 @@ object frmWordDicLogin: TfrmWordDicLogin
   end
   object cxBtn_Close: TcxButton
     Left = 335
-    Top = 445
+    Top = 444
     Width = 75
     Height = 25
     Action = act_Close
@@ -167,7 +174,7 @@ object frmWordDicLogin: TfrmWordDicLogin
   end
   object cxBtn_Logout: TcxButton
     Left = 253
-    Top = 445
+    Top = 444
     Width = 82
     Height = 25
     Action = act_Logout

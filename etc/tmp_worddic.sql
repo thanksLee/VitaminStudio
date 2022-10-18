@@ -7805,3 +7805,337 @@ Insert into T_HAN_WORD
    (569, '이관', 501, 1, 1,
     'Y', 'bhlee', 'bhlee', datetime('now'));
 COMMIT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+--=======================
+select 'insert into t_eng_word values ('
+     ||''''|| c_eng_word_seq || ''','
+	 ||''''|| c_eng_nm || ''','
+	 ||''''|| c_eng_abv_nm || ''','
+	 ||''''|| ifnull(c_eng_dic_memo, '') ||''');' c_insert_stmt
+  from t_eng_word
+
+
+select 'insert into t_user values ('
+     ||''''|| c_user_id || ''','
+	 ||''''|| c_user_nm || ''','
+	 ||''''|| c_user_pwd || ''','
+	 ||''''|| c_user_auth_cd || ''','
+	 ||''''|| c_user_stat_cd || ''','
+	 ||''''|| strftime('%Y-%m-%d %H:%M:%S', c_reg_dt) ||''');' c_insert_stmt
+  from t_user
+
+
+select 'insert into t_han_word values ('
+     ||''''|| c_han_word_seq || ''','
+     ||''''|| c_han_nm || ''','
+     ||''''|| c_eng_word_seq || ''','
+     ||''''|| c_word_sort_cd || ''','
+     ||''''|| c_word_type_cd || ''','
+     ||''''|| c_appr_yn || ''','
+     ||''''|| ifnull(c_kor_dic_memo, '') || ''','
+     ||''''|| ifnull(c_work_memo, '') || ''','
+     ||''''|| c_reg_user_id || ''','
+     ||''''|| ifnull(c_appr_user_id, '') || ''','
+     ||''''|| ifnull(c_etc, '') || ''','
+     ||''''|| strftime('%Y-%m-%d %H:%M:%S', c_reg_dt) ||''');' c_insert_stmt
+  from t_han_word
+
+select 'insert into t_word_cate_mapping values ('
+     ||''''|| c_mapping_seq || ''','
+     ||''''|| '2' || ''','
+     ||''''|| c_eng_word_seq || ''','
+     ||''''|| strftime('%Y-%m-%d %H:%M:%S', c_reg_dt) ||''');' c_insert_stmt
+  from t_word_cate_mapping
+
+
+
+create table tmp_egov_term (
+   a varchar2(10),
+   b varchar2(10),
+   c varchar2(100),
+   d varchar2(1000),
+   e varchar2(30),
+   f varchar2(50),
+   g varchar2(200),
+   h varchar2(100),
+   i varchar2(100),
+   j varchar2(20),
+   k varchar2(100)
+)
+nologging;
+
+create table tmp_egov_word (
+   a varchar2(10),
+   b varchar2(10),
+   c varchar2(30),
+   d varchar2(100),
+   e varchar2(100),
+   f varchar2(1000),
+   g varchar2(10),
+   h varchar2(100),
+   i varchar2(200),
+   j varchar2(200)
+)
+nologging;
+
+create table tmp_egov_domain (
+   a varchar2(10),
+   b varchar2(10),
+   c varchar2(100),
+   d varchar2(100),
+   e varchar2(100),
+   f varchar2(1000),
+   g varchar2(20),
+   h varchar2(20),
+   i varchar2(20),
+   j varchar2(100),
+   k varchar2(100),
+   l varchar2(100),
+   m varchar2(1000)
+)
+nologging;
+
+/* 영문 단어 */
+SELECT 1000 + a c_eng_word_seq
+     , e c_eng_nm
+     , d c_eng_abv_nm
+     , e c_eng_dic_memo
+     , 'insert into t_eng_word values ('
+    || '''' || to_char(1000 + a) || ''','
+    || '''' || replace(e, '''', '''''') || ''','
+    || '''' || d || ''','
+    || '''' || replace(e, '''', '''''') || ''');' c_stmt
+  FROM tmp_egov_word
+ order by lpad(a, 10, '0')
+
+
+/* 한글 단어 */
+SELECT 1000 + row_number() over(order by lpad(a, 10, '0')) c_han_word_seq
+     , c c_han_nm
+     , 1000+a c_eng_word_seq
+     , '1' c_word_sort_cd
+     , '1' c_word_type_cd
+     , 'Y' c_appr_yn
+     , f c_kor_dic_memo
+     , null c_work_dic_memo
+     , 'bhlee' c_reg_user_id
+     , 'bhlee' c_appr_user_id
+     , null c_etc
+     , to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') c_reg_dt
+     , 'insert into t_han_word values ('
+    || '''' || to_char(1000 + row_number() over(order by lpad(a, 10, '0'))) || ''','
+    || '''' || c || ''','
+    || '''' || to_char(1000+a) || ''','
+    || '''' || '1' || ''','
+    || '''' || '1' || ''','
+    || '''' || 'Y' || ''','
+    || '''' || replace(f, '''', '''''') || ''','
+    || '''' || '' || ''','
+    || '''' || 'bhlee' || ''','
+    || '''' || 'bhlee' || ''','
+    || '''' || '' || ''','
+    || '''' || to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') || ''');' c_stmt
+  FROM tmp_egov_word
+;
+
+/* 단어 분류 매핑 */
+select 1000 + row_number() over(order by lpad(a, 10, '0')) c_mapping_seq
+     , '1' c_cate_seq
+     , 1000+a c_eng_word_seq
+     , to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') c_reg_dt
+     , 'insert into t_word_cate_mapping values ('
+    || '''' || to_char(1000 + row_number() over(order by lpad(a, 10, '0'))) || ''','
+    || '''' || '1' || ''','
+    || '''' || to_char(1000+a) || ''','
+    || '''' || to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') || ''');' c_stmt
+  from tmp_egov_word
+
+/* 데이터 타입 */
+select row_number() over(order by e) c_data_type_seq
+     , 'Y' c_domain_yn
+     , e c_domain_nm
+     , replace(f, '''', '''''') c_domain_memo
+     , g c_data_type
+     , case when g = 'NUMERIC' then '017'
+            when g = 'CHAR' then '005'
+            when g = 'VARCHAR' then '001'
+            when g = 'DATETIME' then '009'
+        end c_data_type_cd
+     , h c_data_len
+     , replace(i, '-', '') c_precision_len
+     , j c_save_memo
+     , k c_display_memo
+     , l c_unit
+     , m c_allowble_value
+     , to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') c_reg_de
+     , 'insert into t_data_type values('
+    || '''' || row_number() over(order by lpad(e, 10, '0')) || ''','
+    || '''' || 'Y' || ''','
+    || '''' || e || ''','
+    || '''' || replace(f, '''', '''''') || ''','
+    || '''' || case when g = 'NUMERIC' then '017'
+                    when g = 'CHAR' then '005'
+                    when g = 'VARCHAR' then '001'
+                    when g = 'DATETIME' then '009'
+                end || ''','
+    || '''' || h || ''','
+    || '''' || replace(i, '-', '') || ''','
+    || '''' || j || ''','
+    || '''' || replace(k, '-', '') || ''','
+    || '''' || replace(l, '-', '') || ''','
+    || '''' || replace(m, '-', '') || ''','
+    || '''' || to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') || ''');' c_stmt
+  from tmp_egov_domain a
+
+
+/* 표준 용어 */
+with w_use_word
+as
+(
+select a.c_term
+     , a.c_word_eng
+     , b.c c_word_kor
+     , a.c_lvl
+  from ( select e c_term
+              , regexp_substr(e, '[^_]+', 1, c_lvl) c_word_eng
+              , c_lvl
+           from tmp_egov_term a cross join ( select level c_lvl from dual connect by level <= 10) b
+          where regexp_count(e, '[^_]+') >= b.c_lvl
+          order by e, c_lvl
+         ) a inner join tmp_egov_word b
+             on b.d = a.c_word_eng
+), w_cate_mapping
+   as
+   (
+       select 1000+row_number() over(order by lpad(a, 10, '0')) c_mapping_seq
+            , '1' c_cate_seq
+            , 1000+a c_eng_word_seq
+            , to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') c_reg_dt
+         from tmp_egov_word
+   ), w_data_type
+      as
+      (
+         select row_number() over(order by e) c_data_type_seq
+              , 'Y' c_domain_yn
+              , e c_domain_nm
+              , replace(f, '''', '''''') c_domain_memo
+              , g c_data_type
+              , case when g = 'NUMERIC' then '017'
+                     when g = 'CHAR' then '005'
+                     when g = 'VARCHAR' then '001'
+                     when g = 'DATETIME' then '009'
+                 end c_data_type_cd
+              , h c_data_len
+              , replace(i, '-', '') c_precision_len
+              , j c_save_memo
+              , k c_display_memo
+              , l c_unit
+              , m c_allowble_value
+              , to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') c_reg_de
+           from tmp_egov_domain a
+      )
+select c_dic_seq
+     , c_dic_eng_nm
+     , c_new_term
+     , c_dic_memo
+     , c_reg_dt
+     , 'insert into t_std_dic values('
+    || '''' || d.c_dic_seq || ''','
+    || '''' || d.c_dic_eng_nm || ''','
+    || '''' || d.c_new_term || ''','
+    || '''' || d.c_dic_memo || ''','
+    || '''' || to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') || ''');' c_stmt
+  from ( select row_number() over(order by c) c_dic_seq
+              , e c_dic_eng_nm
+              , ( select listagg(x.c_word_kor, ' ') within group(order by c_lvl)
+                    from w_use_word x
+                   where x.c_term = a.e
+                  ) c_new_term
+              , replace(d, '''', '''''') c_dic_memo
+              , to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') c_reg_dt
+           from tmp_egov_term a
+         ) a
+;
+
+/* 사용단어 내역 */
+with w_use_word
+as
+(
+select a.c_term
+     , a.c_word_eng
+     , b.c c_word_kor
+     , a.c_lvl
+     , a.c_domain_kor
+  from ( select e c_term
+              , regexp_substr(e, '[^_]+', 1, c_lvl) c_word_eng
+              , c_lvl
+              , f c_domain_kor
+           from tmp_egov_term a cross join ( select level c_lvl from dual connect by level <= 10) b
+          where regexp_count(e, '[^_]+') >= b.c_lvl
+          order by e, c_lvl
+         ) a inner join tmp_egov_word b
+             on b.d = a.c_word_eng
+), w_cate_mapping
+   as
+   (
+       select 1000+ row_number() over(order by lpad(a, 10, '0')) c_mapping_seq
+            , '1' c_cate_seq
+            , a c_eng_word_seq
+            , d c_eng_word
+            , to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') c_reg_dt
+         from tmp_egov_word
+   ), w_data_type
+      as
+      (
+         select row_number() over(order by e) c_data_type_seq
+              , 'Y' c_domain_yn
+              , e c_domain_nm
+              , replace(f, '''', '''''') c_domain_memo
+              , g c_data_type
+              , case when g = 'NUMERIC' then '017'
+                     when g = 'CHAR' then '005'
+                     when g = 'VARCHAR' then '001'
+                     when g = 'DATETIME' then '009'
+                 end c_data_type_cd
+              , h c_data_len
+              , replace(i, '-', '') c_precision_len
+              , j c_save_memo
+              , k c_display_memo
+              , l c_unit
+              , m c_allowble_value
+              , to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') c_reg_de
+           from tmp_egov_domain a
+      )
+select row_number() over(order by c_term) c_use_seq
+     , c.c_mapping_seq
+     , b.c_dic_seq
+     , d.c_data_type_seq
+     , to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+     , 'insert into t_use_word_detail values('
+    || '''' || row_number() over(order by c_term) || ''','
+    || '''' || c.c_mapping_seq || ''','
+    || '''' || b.c_dic_seq || ''','
+    || '''' || d.c_data_type_seq || ''','
+    || '''' || to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') || ''');' c_stmt
+  from w_use_word a inner join ( select row_number() over(order by c) c_dic_seq
+                                      , e c_dic_eng_nm
+                                   from tmp_egov_term a
+                                 ) b
+                    on b.c_dic_eng_nm = a.c_term
+                    inner join w_cate_mapping c
+                    on c.c_eng_word = a.c_word_eng
+                    inner join w_data_type d
+                    on d.c_domain_nm = a.c_domain_kor
+;

@@ -14,6 +14,8 @@ type
  TWORDDICSESSION = record
     rUserId      : String;
     rUserAuth    : String;
+    rDBFilePath  : String;
+    rConnFlg     : String;
  end;
 
 

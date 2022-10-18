@@ -30,7 +30,7 @@ object frmDockLogConsole: TfrmDockLogConsole
     Font.Height = -13
     Font.Name = 'Courier New'
     Font.Style = []
-    TabOrder = 0
+    TabOrder = 3
     CodeFolding.GutterShapeSize = 11
     CodeFolding.CollapsedLineColor = clGrayText
     CodeFolding.FolderBarLinesColor = clGrayText
@@ -44,11 +44,13 @@ object frmDockLogConsole: TfrmDockLogConsole
     Gutter.Font.Height = -11
     Gutter.Font.Name = 'Courier New'
     Gutter.Font.Style = []
+    Highlighter = frmMain.SynSQL_HH1
     Lines.Strings = (
       'SynEd_Log')
     OnDropFiles = SynEd_LogDropFiles
     OnStatusChange = SynEd_LogStatusChange
     FontSmoothing = fsmNone
+    ExplicitTop = 31
   end
   object Panel1: TPanel
     Left = 0
@@ -57,7 +59,7 @@ object frmDockLogConsole: TfrmDockLogConsole
     Height = 29
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 0
     object cxGroupBox1: TcxGroupBox
       Left = 665
       Top = 0
@@ -68,14 +70,12 @@ object frmDockLogConsole: TfrmDockLogConsole
       Width = 304
       object cxBtn_Close: TcxButton
         Left = 276
-        Top = 2
+        Top = 4
         Width = 25
         Height = 22
-        OptionsImage.ImageIndex = 32
+        Action = act_WordicClose
         PaintStyle = bpsGlyph
         TabOrder = 0
-        Visible = False
-        OnClick = cxBtn_CloseClick
       end
     end
     object cxGroupBox2: TcxGroupBox
@@ -174,7 +174,7 @@ object frmDockLogConsole: TfrmDockLogConsole
   object cxTxtEd_FilePath: TcxTextEdit
     Left = 368
     Top = 480
-    TabOrder = 2
+    TabOrder = 1
     Text = 'cxTxtEd_FilePath'
     Visible = False
     Width = 409
@@ -182,7 +182,7 @@ object frmDockLogConsole: TfrmDockLogConsole
   object cxGrpBox_ReadProgress: TcxGroupBox
     Left = 141
     Top = 29
-    TabOrder = 3
+    TabOrder = 2
     Visible = False
     Height = 59
     Width = 199
@@ -285,6 +285,11 @@ object frmDockLogConsole: TfrmDockLogConsole
       Hint = 'Log Read Stop'
       ImageIndex = 5
       OnExecute = act_LogReadStopExecute
+    end
+    object act_WordicClose: TAction
+      Caption = 'Close'
+      ImageIndex = 7
+      OnExecute = act_WordicCloseExecute
     end
   end
   object cxImglst_LogConsole: TcxImageList

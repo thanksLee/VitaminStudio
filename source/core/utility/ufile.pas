@@ -218,7 +218,7 @@ var
    lv_FStream : TFileStream;
    lv_LogFileNm : String;
 begin
-   lv_LogFileNm := getBasePath() + LOGSDIR + getLogFileNm();
+   lv_LogFileNm := getBasePath() + LOGSDIR + '\' + getLogFileNm();
    if FileExists(lv_LogFileNm) = False then
    begin
       lv_FStream := TFileStream.Create(lv_LogFileNm, fmCreate);

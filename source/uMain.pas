@@ -300,7 +300,7 @@ begin
    lv_stlParam := TStringList.Create;
    lv_stlParam.StrictDelimiter := True;
    try
-      lv_stlParam.Add('T_COMN_CD');
+      lv_stlParam.Add('t_comn_cd');
       ufBackGroundUniSQLExec(1, pb_DBSql[0].rSQLText, lv_stlParam, pi_ObjQry);
       lv_TableExistCnt := pi_ObjQry.Fields[0].AsInteger;
 
@@ -310,6 +310,8 @@ begin
          begin
             ufBackGroundUniSQLExec(2, pb_DBSql[lv_LoopCnt].rSQLText, lv_stlParam, pi_ObjQry);
          end;
+         ufBackGroundUniSQLExec(2, pb_DBSql[52].rSQLText, lv_stlParam, pi_ObjQry);
+         ufBackGroundUniSQLExec(2, pb_DBSql[53].rSQLText, lv_stlParam, pi_ObjQry);
       end;
 
    finally
@@ -828,7 +830,7 @@ begin
     Options                        := SynED_Main.Options;
 
     {-- Keystroker --}
-    Keystrokes       := SynED_Main.Keystrokes;
+    //Keystrokes       := SynED_Main.Keystrokes;
 
     {-- Event 할당 --}
     //OnDropFiles      := SynED_Main_ SynEd_Qry_0DropFiles;
@@ -1060,6 +1062,7 @@ begin
               CloseFile(lv_logFile);
             end;
             Caption := 'Active Log Console - ' + lv_FileNm;
+            frmDockLogConsole.cxBtn_Close.Enabled := False;
          end;
          cxTxtEd_FilePath.Text := lv_FileDir + lv_FileNm;
 
@@ -1081,6 +1084,7 @@ begin
       Show;
    end;
    cxPagCtl_LogConsole.ActivePageIndex := cxPagCtl_LogConsole.PageCount - 1;
+   cxPagCtl_LogConsole.Pages[cxPagCtl_LogConsole.ActivePageIndex].ImageIndex := 0;
    if pi_Param2 <> '' then
       TfrmDockLogConsole(lv_Form).upUTF8ReadFile(0, TfrmDockLogConsole(lv_Form).cxTxtEd_FilePath.Text);
 end;
@@ -1276,6 +1280,7 @@ procedure TfrmMain.SynED_MainKeyDown(Sender: TObject; var Key: Word;
 var
   lv_Pos1, lv_Pos2 : String;
 begin
+
    lv_Pos1 := ed_SynEd_Main_Pos1.Text;
    lv_Pos2 := ed_SynEd_Main_Pos2.Text;
 
@@ -1304,6 +1309,7 @@ begin
       ReplaceDlg.FindText := lf_SynEdit.SelText;
       ReplaceDlg.Execute;
    end;
+
 end;
 
 procedure TfrmMain.SynED_MainPaintTransient(Sender: TObject; Canvas: TCanvas;
@@ -1341,6 +1347,7 @@ var
     end;
   end;
 begin
+
    if pb_FPaintUpdating then Exit;
 
    lv_Editor := TSynEdit(Sender);
@@ -1409,6 +1416,7 @@ begin
      if pb_FMatchPainted then
         SelectClipRgn(lv_Editor.Canvas.Handle, 0);
    end;
+
 end;
 
 procedure TfrmMain.SynED_MainStatusChange(Sender: TObject;
@@ -1416,9 +1424,11 @@ procedure TfrmMain.SynED_MainStatusChange(Sender: TObject;
 var
   lv_EditMode : TSynWebWordMarkerMode;
 begin
+
   if scSelection in Changes then
     for lv_EditMode := Low(TSynWebWordMarkerMode) to High(TSynWebWordMarkerMode) do
       lf_FWordMarkers[lv_EditMode].NotifySelChanged;
+
 end;
 
 procedure TfrmMain.actWindowCloseExecute(Sender: TObject);
@@ -1430,12 +1440,15 @@ procedure TfrmMain.actWordicExecute(Sender: TObject);
 begin
    if ufActiveFrom(9, 'frmWordDicMain') = nil then
    begin
+      SetLength(pb_WordDicSession, Length(pb_WordDicSession)+1);
       frmWordDicMain := TfrmWordDicMain.Create(Application);
       uPFormSetting(1, frmWordDicMain);
       ufWorddicDbConn(UniConnWordic);
       {-- Project List를 읽어 온다. --}
       with frmWordDicMain do
       begin
+         cxTxt_Search.Clear;
+         uPButtonCtrl(pb_WordDicSession[0].rConnFlg);
          Show;
       end;
    end;

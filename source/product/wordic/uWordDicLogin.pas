@@ -207,10 +207,9 @@ begin
       ufBackGroundUniSQLExec(1, pb_DBSQL[49].rSQLText, lv_stlParam, lv_qryTmp);
       lv_qryTmp.FetchingAll;
 
-      SetLength(pb_WordDicSession, Length(pb_WordDicSession)+1);
       while not lv_qryTmp.Eof do
       begin
-         pb_WordDicSession[0].rUserId := lv_qryTmp.Fields[0].AsString;
+         pb_WordDicSession[0].rUserId  := lv_qryTmp.Fields[0].AsString;
          pb_WordDicSession[0].rUserAuth := lv_qryTmp.Fields[1].AsString;
          lv_qryTmp.Next;
       end;
@@ -226,8 +225,11 @@ begin
       end else
       begin
          lv_vgrdRow := TcxEditorRow(cxVGrd_SQLite.Rows.Items[0]);
-         frmWordDicMain.Caption := frmWordDicMain.Caption + ' - ' + cxTxt_UserId.Text + ' [ ' + lv_vgrdRow.Properties.Value + ' ]';
+         frmWordDicMain.Caption := frmWordDicMain.Caption + ' - ' + pb_WordDicSession[0].rUserId + ' [ ' + lv_vgrdRow.Properties.Value + ' ]';
          frmWordDicMain.uPWordList;
+         lv_vgrdRow := TcxEditorRow(cxVGrd_SQLite.Rows.Items[1]);
+         pb_WordDicSession[0].rConnFlg := lv_vgrdRow.Properties.Value;
+         frmWordDicMain.uPButtonCtrl(pb_WordDicSession[0].rConnFlg);
          self.Close;
       end;
 

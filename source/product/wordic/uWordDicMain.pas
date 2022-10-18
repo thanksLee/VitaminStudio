@@ -55,7 +55,6 @@ type
     cxGrd_WordListDBTableView1Column10: TcxGridDBColumn;
     cxStyleRepo_WordLst: TcxStyleRepository;
     cxStyle1: TcxStyle;
-    cxStyle2: TcxStyle;
     dxBevel6: TdxBevel;
     cxChk_RowSelect: TcxCheckBox;
     act_RowSelect: TAction;
@@ -76,6 +75,11 @@ type
     cxBtn_Search: TcxButton;
     act_Search: TAction;
     cxGrd_WordListDBTableView1Column17: TcxGridDBColumn;
+    dxBevel9: TdxBevel;
+    act_windowSplit: TAction;
+    act_windowMerge: TAction;
+    cxBtn_windowSplit: TcxButton;
+    cxBtn_windowMerge: TcxButton;
     procedure act_LoginExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
@@ -89,11 +93,14 @@ type
       Sender: TcxCustomGridTableView;
       ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
       AShift: TShiftState; var AHandled: Boolean);
+    procedure act_windowSplitExecute(Sender: TObject);
+    procedure act_windowMergeExecute(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
     procedure uPWordList;
+    procedure uPButtonCtrl(pi_LoginFlg : String);
   end;
 
 var
@@ -103,7 +110,7 @@ implementation
 
 {$R *.dfm}
 
-uses uMain, uWordDicLogin, uForm, uUnidac, uGlobal;
+uses uMain, uWordDicLogin, uForm, uUnidac, uGlobal, uConst;
 
 //************************************************************************//
 //* S : User Defined Function, Procedure
@@ -145,6 +152,28 @@ begin
       UniQry_WordLst.EnableControls;
       FreeAndNil(lv_stlParam);
    end;
+end;
+
+procedure TfrmWordDicMain.uPButtonCtrl(pi_LoginFlg : String);
+var
+   lv_LoopCnt : Integer;
+begin
+   for lv_LoopCnt := 0 to ComponentCount - 1 do
+   begin
+      if (Components[lv_LoopCnt] is TAction) then
+      begin
+         case (Components[lv_LoopCnt] as TAction).Tag of
+            12, 13, 14, 15:
+            begin
+               if pi_LoginFlg = 'True' then
+                  (Components[lv_LoopCnt] as TAction).Enabled := True
+               else
+                  (Components[lv_LoopCnt] as TAction).Enabled := False;
+            end;
+         end;
+      end;
+   end;
+
 end;
 
 //************************************************************************//
@@ -189,6 +218,24 @@ begin
       cxGrd_WordListDBTableView1.OptionsSelection.CellMultiSelect := True;
       cxGrd_WordListDBTableView1.OptionsSelection.MultiSelect := True;
    end;
+end;
+
+procedure TfrmWordDicMain.act_windowMergeExecute(Sender: TObject);
+begin
+   FormStyle := fsMDIChild;
+   WindowState := wsMaximized;
+   Position := poOwnerFormCenter;
+   cxBtn_windowSplit.Enabled := True;
+   cxBtn_windowMerge.Enabled := False;
+end;
+
+procedure TfrmWordDicMain.act_windowSplitExecute(Sender: TObject);
+begin
+   frmWordDicMain.FormStyle := fsNormal;
+   frmWordDicMain.WindowState := wsNormal;
+   Position := poOwnerFormCenter;
+   cxBtn_windowSplit.Enabled := False;
+   cxBtn_windowMerge.Enabled := True;
 end;
 
 procedure TfrmWordDicMain.cxGrd_WordListDBTableView1CellDblClick(

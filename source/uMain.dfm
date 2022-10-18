@@ -11598,21 +11598,21 @@ object frmMain: TfrmMain
     ExplicitWidth = 1178
   end
   object dxBevel2: TdxBevel
-    Left = 150
+    Left = 144
     Top = 2
     Width = 6
     Height = 35
     Shape = dxbsLineLeft
   end
   object dxBevel3: TdxBevel
-    Left = 233
+    Left = 227
     Top = 2
     Width = 7
     Height = 35
     Shape = dxbsLineLeft
   end
   object cxCmbSkin: TcxComboBox
-    Left = 242
+    Left = 236
     Top = 4
     AutoSize = False
     Properties.DropDownListStyle = lsFixedList
@@ -11622,7 +11622,7 @@ object frmMain: TfrmMain
     Width = 154
   end
   object cxBtnSkinChange: TcxButton
-    Left = 402
+    Left = 396
     Top = 4
     Width = 91
     Height = 30
@@ -11630,7 +11630,7 @@ object frmMain: TfrmMain
     TabOrder = 1
   end
   object cxBtnWordic: TcxButton
-    Left = 7
+    Left = 1
     Top = 4
     Width = 35
     Height = 30
@@ -11640,7 +11640,7 @@ object frmMain: TfrmMain
     TabOrder = 2
   end
   object cxButton1: TcxButton
-    Left = 41
+    Left = 35
     Top = 4
     Width = 35
     Height = 30
@@ -11650,7 +11650,7 @@ object frmMain: TfrmMain
     TabOrder = 3
   end
   object cxButton2: TcxButton
-    Left = 75
+    Left = 69
     Top = 4
     Width = 35
     Height = 30
@@ -11660,7 +11660,7 @@ object frmMain: TfrmMain
     TabOrder = 4
   end
   object cxButton3: TcxButton
-    Left = 109
+    Left = 103
     Top = 4
     Width = 35
     Height = 30
@@ -11670,7 +11670,7 @@ object frmMain: TfrmMain
     TabOrder = 5
   end
   object cxButton4: TcxButton
-    Left = 192
+    Left = 186
     Top = 4
     Width = 36
     Height = 30
@@ -11680,7 +11680,7 @@ object frmMain: TfrmMain
     TabOrder = 6
   end
   object cxButton5: TcxButton
-    Left = 157
+    Left = 151
     Top = 4
     Width = 35
     Height = 30
@@ -11689,10 +11689,10 @@ object frmMain: TfrmMain
     TabOrder = 7
   end
   object SynED_Main: TSynEdit
-    Left = 0
-    Top = 417
+    Left = 8
+    Top = 104
     Width = 545
-    Height = 264
+    Height = 561
     ActiveLineColor = 10156796
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -12175,7 +12175,7 @@ object frmMain: TfrmMain
       '0028=   and b.c_han_nm like :c_han_nm'
       '0029=   and b.c_word_sort_cd like :c_word_sort_cd'
       '0030=   and b.c_word_type_cd like :c_word_type_cd')
-    Options = [eoAutoIndent, eoDragDropEditing, eoDropFiles, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
+    Options = [eoAutoIndent, eoDragDropEditing, eoDropFiles, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoSpecialLineDefaultFg, eoTabsToSpaces]
     TabWidth = 1
     WantTabs = True
     OnStatusChange = SynED_MainStatusChange
@@ -12314,7 +12314,6 @@ object frmMain: TfrmMain
       ImageIndex = 0
       TabsProperties.CustomButtons.Buttons = <>
       TabsProperties.CustomButtons.TabImages = MainCxImglst_16
-      ExplicitWidth = 790
       DockingType = 0
       OriginalWidth = 790
       OriginalHeight = 178

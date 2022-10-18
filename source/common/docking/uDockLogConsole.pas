@@ -33,7 +33,6 @@ uses
 
 type
   TfrmDockLogConsole = class(TForm)
-    SynEd_Log: TSynEdit;
     Panel1: TPanel;
     cxGroupBox1: TcxGroupBox;
     cxGroupBox2: TcxGroupBox;
@@ -63,9 +62,10 @@ type
     act_undocking: TAction;
     act_LogReload: TAction;
     act_LogReadStop: TAction;
+    SynEd_Log: TSynEdit;
+    act_WordicClose: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
-    procedure cxBtn_CloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure SynEd_LogDropFiles(Sender: TObject; X, Y: Integer;
       AFiles: TStrings);
@@ -79,6 +79,7 @@ type
     procedure act_dockingExecute(Sender: TObject);
     procedure act_LogReloadExecute(Sender: TObject);
     procedure act_LogReadStopExecute(Sender: TObject);
+    procedure act_WordicCloseExecute(Sender: TObject);
   private
     { Private declarations }
     //* Loop 도중에 Break을 하기 위하여 사용.
@@ -439,15 +440,9 @@ begin
    cxBtn_Close.Visible        := True;
 end;
 
-procedure TfrmDockLogConsole.cxBtn_CloseClick(Sender: TObject);
+procedure TfrmDockLogConsole.act_WordicCloseExecute(Sender: TObject);
 begin
    Close;
-//   if Caption = 'Active Log Console' then
-//      Application.MessageBox(StrPCopy(pv_arrMessage, ufMessageInfo(0, _WARN_LOG_CLOSE_MSG, ''))
-//                             , 'Window Close Warning!'
-//                             , MB_OK + MB_ICONWARNING
-//                             );
-
 end;
 
 procedure TfrmDockLogConsole.FormClose(Sender: TObject;
@@ -495,9 +490,11 @@ procedure TfrmDockLogConsole.SynEd_LogStatusChange(Sender: TObject;
 var
   lv_EditMode : TSynWebWordMarkerMode;
 begin
+
   if scSelection in Changes then
     for lv_EditMode := Low(TSynWebWordMarkerMode) to High(TSynWebWordMarkerMode) do
       lf_FWordMarkers[lv_EditMode].NotifySelChanged;
+
 end;
 
 procedure TfrmDockLogConsole.timer_LogReadTimer(Sender: TObject);
